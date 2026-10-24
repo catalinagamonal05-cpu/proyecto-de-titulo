@@ -1,0 +1,16 @@
+# Entornos virtuales de Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Archivos del sistema
+.DS_Store
+.vscode/
+.idea/
+
+# Flutter / Dart
+.dart_tool/
+.build/
+build/
