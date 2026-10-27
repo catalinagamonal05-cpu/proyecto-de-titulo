@@ -4,7 +4,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
-from schemas import Usuario, UsuarioCreate
+from schemas import Usuario, UsuarioCreate, UsuarioLogin, UsuarioPublic
 from database import get_session
 
 router = APIRouter(
@@ -15,6 +15,18 @@ router = APIRouter(
 @router.get("/")
 def get_usuarios(limit: int = 10, session: Session = Depends(get_session)):
     return session.exec(select(Usuario).limit(limit)).all()
+
+@router.post("/login", response_model = UsuarioPublic)
+def login(login_data: UsuarioLogin, session: Session = Depends(get_session)):
+    usuario = session.exec(
+        select(Usuario).where(Usuario.email == login_data.email)
+    ).first()
+    if usuario is None or usuario.contrasena != login_data.contrasena:
+        raise HTTPException(
+            status_code = 401,
+            detail = "Correo o contraseña incorrectos",
+        )
+    return usuario
 
 @router.get("/{usuario_id}")
 def get_usuario(usuario_id: int, session: Session = Depends(get_session)):

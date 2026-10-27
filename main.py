@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from database import engine, create_db_and_tables, get_session
-import schemas
+import schemas as schemas
 
 from routers.usuarios import router as usuarios_router
 from routers.gastos import router as gastos_router

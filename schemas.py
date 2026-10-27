@@ -86,6 +86,15 @@ class UsuarioBase(SQLModel):
 class UsuarioCreate(UsuarioBase):
     pass
 
+class UsuarioLogin(SQLModel):
+    email: EmailStr
+    contrasena: str
+
+class UsuarioPublic(SQLModel):
+    id_usuario: int
+    nombre: str
+    email: EmailStr
+
 class Usuario(UsuarioBase, table = True):
     __tablename__ = "usuario"
     id_usuario: Optional[int] = Field(default = None, primary_key = True)
