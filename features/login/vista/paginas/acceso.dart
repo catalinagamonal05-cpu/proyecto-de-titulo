@@ -4,12 +4,12 @@ class Acceso extends StatefulWidget {
   const Acceso({super.key});
 
   @override
-  State<Acceso> createState() => _AccesoState();
+  ConsumerState<Acceso> createState() => _AccesoState();
 }
 
-class _AccesoState extends State<Acceso> {
+class _AccesoState extends ConsumerState<Acceso> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold
+    return Scaffold();
   }
 }
