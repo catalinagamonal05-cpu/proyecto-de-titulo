@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
 import 'core/theme/theme.dart';
-import 'features/login/vista/paginas/acceso.dart';
 import 'features/login/vista/paginas/login.dart';
 
 void main() {
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeApp.lightTheme,
       darkTheme: ThemeApp.darkTheme,
       themeMode: ThemeMode.system,
-      home: const Acceso(),
+      home: const Login(),
     );
   }
 }
