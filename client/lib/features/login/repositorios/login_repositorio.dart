@@ -7,7 +7,7 @@ import '../modelo/modelo_usuario.dart';
 import '../../../core/falla/falla.dart';
 
 class LoginRepositorio {
-  Future<Either<FallaApp, Modelo>> signup({
+  Future<Either<FallaApp, ModeloUsuario>> signup({
     required String nombre,
     required String email,
     required String password,
@@ -24,27 +24,34 @@ class LoginRepositorio {
       );
       final resMap = jsonDecode(respuesta.body) as Map<String, dynamic>;
       if (respuesta.statusCode != 201) {
-        return Left(FallaApp(resMap['detalle']));
+        //{'detail': 'El correo electrónico ya está registrado.'}
+        return Left(FallaApp(resMap['detail']));
       }
-      return Right(userData);
+      return Right(ModeloUsuario.fromMap(resMap));
       // Implementa la lógica de registro aquí
     } catch (e) {
       return Left(FallaApp(e.toString()));
     }
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<Either<FallaApp, ModeloUsuario>> login({
+    required String email,
+    required String password,
+  }) async {
     try {
       final respuesta = await http.post(
         Uri.parse("http://127.0.0.1:8000/usuarios/login"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'contrasena': password}),
       );
-      print(respuesta.body);
-      print(respuesta.statusCode);
+      final resMap = jsonDecode(respuesta.body) as Map<String, dynamic>;
+      if (respuesta.statusCode != 200) {
+        return Left(FallaApp(resMap['detail']));
+      }
+      return Right(ModeloUsuario.fromMap(resMap));
       // Implementa la lógica de inicio de sesión aquí
     } catch (e) {
-      print(e);
+      return Left(FallaApp(e.toString()));
     }
   }
 }

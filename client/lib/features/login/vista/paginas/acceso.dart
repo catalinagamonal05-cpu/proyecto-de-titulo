@@ -1,6 +1,7 @@
 import 'package:client/features/login/repositorios/login_repositorio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 
 import '../widgets/botones.dart';
 import '../widgets/txt_form.dart';
@@ -68,7 +69,11 @@ class _AccesoState extends ConsumerState<Acceso> {
                     email: correoController.text,
                     password: contrasenaController.text,
                   );
-                  print(res);
+                  final val = switch (res) {
+                    Left(value: final l) => l,
+                    Right(value: final r) => r.correo,
+                  };
+                  print(val);
                 },
               ),
               const SizedBox(height: 20),

@@ -67,7 +67,7 @@ class _LoginState extends ConsumerState<Login> {
                   );
                   final val = switch (res) {
                     Left(value: final l) => l,
-                    Right(value: final r) => r.toString(),
+                    Right(value: final r) => r,
                   };
                   print(val);
                 },
