@@ -81,7 +81,7 @@ class Docs(DocsBase, table = True):
 class UsuarioBase(SQLModel):
     nombre: str = Field(max_length = 50, min_length = 3)
     email: EmailStr = Field(max_length = 50, min_length = 3)
-    contrasena: str = Field(max_length = 20, min_length = 3)
+    contrasena: str = Field(max_length = 255, min_length = 3)
 
 class UsuarioCreate(UsuarioBase):
     pass

@@ -4,7 +4,7 @@ CREATE TABLE usuario(
 	id_usuario int not null auto_increment,
     nombre varchar (50) not null,
     email varchar (50) not null UNIQUE,
-    contrasena varchar (20) not null,
+    contrasena varchar (255) not null,
     PRIMARY KEY (id_usuario)
 );
 INSERT INTO usuario (email, contrasena) VALUES ('c.gamonallen@uandresbello.edu', 'NARA');
@@ -54,3 +54,5 @@ create table docs(
     PRIMARY KEY (id_doc),
     foreign key (id_usuario) references usuario(id_usuario)
 );
+
+ALTER TABLE usuario MODIFY COLUMN contrasena varchar(255) NOT NULL;

@@ -63,11 +63,12 @@ class _AccesoState extends ConsumerState<Acceso> {
               Boton(
                 text: 'Continuar',
                 apretar: () async {
-                  await LoginRepositorio().signup(
+                  final res = await LoginRepositorio().signup(
                     nombre: nombreController.text,
                     email: correoController.text,
                     password: contrasenaController.text,
                   );
+                  print(res);
                 },
               ),
               const SizedBox(height: 20),

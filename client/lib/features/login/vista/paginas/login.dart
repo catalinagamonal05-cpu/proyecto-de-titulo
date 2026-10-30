@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 
 import '../../repositorios/login_repositorio.dart';
 import '../widgets/botones.dart';
@@ -29,6 +30,7 @@ class _LoginState extends ConsumerState<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
@@ -59,12 +61,18 @@ class _LoginState extends ConsumerState<Login> {
               Boton(
                 text: 'Continuar',
                 apretar: () async {
-                  await LoginRepositorio().login(
+                  final res = await LoginRepositorio().login(
                     email: correoController.text,
                     password: contrasenaController.text,
                   );
+                  final val = switch (res) {
+                    Left(value: final l) => l,
+                    Right(value: final r) => r.toString(),
+                  };
+                  print(val);
                 },
               ),
+
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
