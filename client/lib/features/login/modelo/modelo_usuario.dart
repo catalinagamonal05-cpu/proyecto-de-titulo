@@ -24,11 +24,17 @@ class ModeloUsuario {
   }
 
   factory ModeloUsuario.fromMap(Map<String, dynamic> map) {
-    return ModeloUsuario(
-      nombre: map['nombre'] ?? '',
-      correo: map['correo'] ?? '',
-      id: map['id'] ?? '',
-    );
+    final datosUsuario = map['usuario'] is Map<String, dynamic>
+        ? map['usuario'] as Map<String, dynamic>
+        : map;
+
+    final nombre = datosUsuario['nombre']?.toString() ?? '';
+    final correo =
+        (datosUsuario['correo'] ?? datosUsuario['email'])?.toString() ?? '';
+    final id =
+        (datosUsuario['id'] ?? datosUsuario['id_usuario'])?.toString() ?? '';
+
+    return ModeloUsuario(nombre: nombre, correo: correo, id: id);
   }
 
   String toJson() => json.encode(toMap());

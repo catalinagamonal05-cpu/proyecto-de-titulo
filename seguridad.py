@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Annotated
+from typing import Annotated, Optional
 import os
 
 from dotenv import load_dotenv
@@ -23,7 +23,7 @@ class Token(SQLModel):
     token_type: str
 
 class TokenData(SQLModel):
-    email: str | None = None
+    email: Optional[str] = None
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -36,7 +36,7 @@ def obtener_hash_contrasena(contrasena: str) -> str:
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/token")
 
-def crear_token_acceso(data: dict, expires_delta: timedelta | None = None) -> str:
+def crear_token_acceso(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
@@ -46,7 +46,7 @@ def crear_token_acceso(data: dict, expires_delta: timedelta | None = None) -> st
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def autenticar_usuario(session: Session, email: str, contrasena: str) -> Usuario | None:
+def autenticar_usuario(session: Session, email: str, contrasena: str) -> Optional[Usuario]:
     usuario = session.exec(select(Usuario).where(Usuario.email == email)).first()
     if not usuario:
         return None

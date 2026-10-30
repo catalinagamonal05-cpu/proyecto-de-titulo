@@ -28,7 +28,6 @@ class LoginRepositorio {
         return Left(FallaApp(resMap['detail']));
       }
       return Right(ModeloUsuario.fromMap(resMap));
-      // Implementa la lógica de registro aquí
     } catch (e) {
       return Left(FallaApp(e.toString()));
     }
@@ -48,8 +47,27 @@ class LoginRepositorio {
       if (respuesta.statusCode != 200) {
         return Left(FallaApp(resMap['detail']));
       }
-      return Right(ModeloUsuario.fromMap(resMap));
-      // Implementa la lógica de inicio de sesión aquí
+
+      final token = resMap['access_token']?.toString();
+      if (token == null || token.isEmpty) {
+        return Left(FallaApp('La API no devolvió un token válido'));
+      }
+
+      final respuestaUsuario = await http.get(
+        Uri.parse("http://127.0.0.1:8000/usuarios/me"),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      final usuarioMap =
+          jsonDecode(respuestaUsuario.body) as Map<String, dynamic>;
+      if (respuestaUsuario.statusCode != 200) {
+        return Left(
+          FallaApp(
+            usuarioMap['detail']?.toString() ?? 'No se pudo obtener el usuario',
+          ),
+        );
+      }
+
+      return Right(ModeloUsuario.fromMap(usuarioMap));
     } catch (e) {
       return Left(FallaApp(e.toString()));
     }

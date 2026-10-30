@@ -78,7 +78,7 @@ def get_usuario(usuario_id: int, session: Session = Depends(get_session)):
         raise HTTPException(status_code = 404, detail = "Usuario no encontrado")
     return usuario
 
-@router.post("/", status_code = 201)
+@router.post("/", response_model = UsuarioPublic, status_code = 201)
 def create_usuario(usuario_data: UsuarioCreate, session: Session = Depends(get_session)):
     existente = session.exec(select(Usuario).where(Usuario.email == usuario_data.email)).first()
     if existente:
