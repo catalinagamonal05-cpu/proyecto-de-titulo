@@ -1,12 +1,13 @@
+import 'package:client/features/login/vista/paginas/acceso.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utility.dart';
 import '../../../../core/widgets/carga.dart';
 import '../../viewmodel/auth_viewmodel.dart';
+import '../../../homepage/vista/paginas/homepage.dart';
 import '../widgets/botones.dart';
 import '../widgets/txt_form.dart';
-import 'acceso.dart';
 
 class Login extends ConsumerStatefulWidget {
   const Login({super.key});
@@ -34,12 +35,14 @@ class _LoginState extends ConsumerState<Login> {
     ref.listen(authViewmodelProvider, (_, next) {
       next?.when(
         data: (data) {
-          //Navigator.push(
-          //  context,
-          //  MaterialPageRoute(builder: (context) => const Homepage()),
-          //);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
         },
-        error: (error, st) {showSnackBar(context, error.toString());},
+        error: (error, st) {
+          showSnackBar(context, error.toString());
+        },
         loading: () {},
       );
     });
