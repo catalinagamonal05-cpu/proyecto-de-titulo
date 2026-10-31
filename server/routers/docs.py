@@ -4,8 +4,8 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
-from schemas import Docs, DocsCreate
-from database import get_session
+from server.schemas import Docs, DocsCreate
+from server.database import get_session
 
 router = APIRouter(
     prefix = "/docs",

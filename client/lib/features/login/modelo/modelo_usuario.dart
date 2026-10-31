@@ -4,23 +4,36 @@ class ModeloUsuario {
   final String nombre;
   final String correo;
   final String id;
+  final String token;
 
   const ModeloUsuario({
     required this.nombre,
     required this.correo,
     required this.id,
+    this.token = '',
   });
 
-  ModeloUsuario copyWith({String? nombre, String? correo, String? id}) {
+  ModeloUsuario copyWith({
+    String? nombre,
+    String? correo,
+    String? id,
+    String? token,
+  }) {
     return ModeloUsuario(
       nombre: nombre ?? this.nombre,
       correo: correo ?? this.correo,
       id: id ?? this.id,
+      token: token ?? this.token,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{'nombre': nombre, 'correo': correo, 'id': id};
+    return <String, dynamic>{
+      'nombre': nombre,
+      'correo': correo,
+      'id': id,
+      'token': token,
+    };
   }
 
   factory ModeloUsuario.fromMap(Map<String, dynamic> map) {
@@ -34,7 +47,12 @@ class ModeloUsuario {
     final id =
         (datosUsuario['id'] ?? datosUsuario['id_usuario'])?.toString() ?? '';
 
-    return ModeloUsuario(nombre: nombre, correo: correo, id: id);
+    return ModeloUsuario(
+      nombre: nombre,
+      correo: correo,
+      id: id,
+      token: datosUsuario['token']?.toString() ?? '',
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -44,7 +62,7 @@ class ModeloUsuario {
 
   @override
   String toString() =>
-      'ModeloUsuario(nombre: $nombre, correo: $correo, id: $id)';
+      'ModeloUsuario(nombre: $nombre, correo: $correo, id: $id, token: ${token.isEmpty ? 'vacío' : 'presente'})';
 
   @override
   bool operator ==(covariant ModeloUsuario other) {

@@ -9,8 +9,8 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlmodel import Session, select, Field, SQLModel
 
-from database import get_session
-from schemas import Usuario
+from server.database import get_session
+from server.schemas import Usuario
 
 load_dotenv()
 
@@ -23,7 +23,7 @@ class Token(SQLModel):
     token_type: str
 
 class TokenData(SQLModel):
-    email: Optional[str] = None
+    usuario_id: Optional[str] = None
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -65,15 +65,15 @@ async def obtener_usuario_actual(
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
-        if email is None:
+        usuario_id: str = payload.get("sub")
+        if usuario_id is None:
             raise credentials_exception
-        token_data = TokenData(email=email)
+        token_data = TokenData(usuario_id=usuario_id)
     except JWTError:
         raise credentials_exception
 
     usuario = session.exec(
-        select(Usuario).where(Usuario.email == token_data.email)
+        select(Usuario).where(Usuario.id_usuario == token_data.usuario_id)
     ).first()
     if usuario is None:
         raise credentials_exception

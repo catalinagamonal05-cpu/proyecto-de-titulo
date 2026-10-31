@@ -9,9 +9,9 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session, select
 
-from schemas import Usuario, UsuarioCreate, UsuarioLogin, UsuarioPublic
-from database import get_session
-from seguridad import (
+from server.schemas import Usuario, UsuarioCreate, UsuarioLogin, UsuarioPublic
+from server.database import get_session
+from server.seguridad import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     Token,
     obtener_hash_contrasena,
@@ -40,7 +40,7 @@ def login_para_token(
         )
     access_token_expires = timedelta(minutes = ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = crear_token_acceso(
-        data = {"sub": usuario.email},
+        data = {"sub": usuario.id_usuario},
         expires_delta = access_token_expires,
     )
     return Token(access_token = access_token, token_type = "bearer")
@@ -56,7 +56,7 @@ def login(login_data: UsuarioLogin, session: Session = Depends(get_session)):
         )
     access_token_expires = timedelta(minutes = ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = crear_token_acceso(
-        data = {"sub": usuario.email},
+        data = {"sub": usuario.id_usuario},
         expires_delta = access_token_expires,
     )
     return Token(access_token = access_token, token_type = "bearer")
@@ -72,7 +72,7 @@ def get_usuarios(limit: int = 10, session: Session = Depends(get_session)):
     return session.exec(select(Usuario).limit(limit)).all()
 
 @router.get("/{usuario_id}")
-def get_usuario(usuario_id: int, session: Session = Depends(get_session)):
+def get_usuario(usuario_id: str, session: Session = Depends(get_session)):
     usuario = session.get(Usuario, usuario_id)
     if not usuario:
         raise HTTPException(status_code = 404, detail = "Usuario no encontrado")
@@ -92,7 +92,7 @@ def create_usuario(usuario_data: UsuarioCreate, session: Session = Depends(get_s
     return usuario
 
 @router.delete("/{usuario_id}")
-def delete_usuario(usuario_id: int, session: Session = Depends(get_session)):
+def delete_usuario(usuario_id: str, session: Session = Depends(get_session)):
     usuario = session.get(Usuario, usuario_id)
     if not usuario:
         raise HTTPException(status_code = 404, detail = "Usuario no encontrado")
@@ -101,7 +101,7 @@ def delete_usuario(usuario_id: int, session: Session = Depends(get_session)):
     return {"mensaje": "Usuario eliminado correctamente"}
 
 @router.patch("/{usuario_id}")
-def update_usuario(usuario_id: int, usuario_actualizado: UsuarioCreate, session: Session = Depends(get_session)):
+def update_usuario(usuario_id: str, usuario_actualizado: UsuarioCreate, session: Session = Depends(get_session)):
     usuario_db = session.get(Usuario, usuario_id)
     if not usuario_db:
         raise HTTPException(status_code = 404, detail = "Usuario no encontrado")

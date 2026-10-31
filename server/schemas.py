@@ -1,5 +1,6 @@
 from datetime import datetime, date
 from typing import Optional
+import uuid
 from pydantic import EmailStr
 from sqlmodel import SQLModel, Field, Relationship
 
@@ -12,7 +13,7 @@ class GastosBase(SQLModel):
     porcentaje_pago: int = Field(ge = 0, index = True)
     fecha_pago: datetime = Field(index = True)
     fecha_pagado: datetime = Field(index = True)
-    id_usuario: int = Field(foreign_key = "usuario.id_usuario")
+    id_usuario: str = Field(max_length = 36, foreign_key = "usuario.id_usuario")
 
 class GastosCreate(GastosBase):
     pass
@@ -32,7 +33,7 @@ class EventosBase(SQLModel):
     repeticion: int = Field(ge = 0, index = True)
     evento_inicio: datetime = Field(index = True)
     evento_termino: datetime = Field(index = True)
-    id_usuario: int = Field(foreign_key = "usuario.id_usuario")
+    id_usuario: str = Field(max_length = 36, foreign_key = "usuario.id_usuario")
 
 class EventosCreate(EventosBase):
     pass
@@ -49,7 +50,7 @@ class ChatBase(SQLModel):
     contenido: str = Field(max_length = 5000, min_length = 3, index = True)
     envio: datetime = Field(index = True)
     filtro_aprobado: bool = Field(ge = 0)
-    id_usuario: int = Field(foreign_key = "usuario.id_usuario")
+    id_usuario: str = Field(max_length = 36, foreign_key = "usuario.id_usuario")
 
 class ChatCreate(ChatBase):
     pass
@@ -65,7 +66,7 @@ class Chat(ChatBase, table = True):
 class DocsBase(SQLModel):
     url_arch: str = Field(max_length = 500)
     fecha_subida: datetime = Field(index = True)
-    id_usuario: int = Field(foreign_key = "usuario.id_usuario")
+    id_usuario: str = Field(max_length = 36, foreign_key = "usuario.id_usuario")
 
 class DocsCreate(DocsBase):
     pass
@@ -91,13 +92,13 @@ class UsuarioLogin(SQLModel):
     contrasena: str
 
 class UsuarioPublic(SQLModel):
-    id_usuario: int
+    id_usuario: str
     nombre: str
     email: EmailStr
 
 class Usuario(UsuarioBase, table = True):
     __tablename__ = "usuario"
-    id_usuario: Optional[int] = Field(default = None, primary_key = True)
+    id_usuario: str = Field(default_factory=lambda: str(uuid.uuid4()), max_length = 36, primary_key = True)
 
     gastos: list[Gastos] = Relationship(back_populates = "usuario")
     eventos: list[Eventos] = Relationship(back_populates = "usuario")
