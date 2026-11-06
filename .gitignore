@@ -22,8 +22,27 @@ __pycache__/
 .idea/
 *.swp
 *.swo
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
 
-# Logs
+# Flutter/Dart/Pub specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Logs and temporary files
 *.log
-
-#a
+flutter_*.log
+.DS_Store
+.metadata
