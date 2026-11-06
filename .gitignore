@@ -1,0 +1,27 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Entornos y secretos
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editores e IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
