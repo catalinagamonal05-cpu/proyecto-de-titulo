@@ -1,0 +1,24 @@
+{
+  "Riverpod ConsumerStatefulWidget": {
+    "scope": "dart",
+    "prefix": ["stfulConsummer", "stfulConsumer"],
+    "body": [
+      "import 'package:flutter_riverpod/flutter_riverpod.dart';",
+      "",
+      "class ${1:Acceso} extends ConsumerStatefulWidget {",
+      "  const ${1:Acceso}({super.key});",
+      "",
+      "  @override",
+      "  ConsumerState<${1:Acceso}> createState() => _${1:Acceso}State();",
+      "}",
+      "",
+      "class _${1:Acceso}State extends ConsumerState<${1:Acceso}> {",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return ${0:const Placeholder()};",
+      "  }",
+      "}"
+    ],
+    "description": "Generates a Riverpod ConsumerStatefulWidget and its ConsumerState"
+  }
+}
